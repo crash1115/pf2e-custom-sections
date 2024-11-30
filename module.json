@@ -1,7 +1,10 @@
 {
   "id": "pf2e-custom-sections",
   "title": "PF2e Custom Action Sections",
+  "description": "Allows users to add custom sections to the Encounter Actions tab on their character sheets.",
   "version": "0.1.0",
+  "download": "https://github.com/crash1115/pf2e-custom-sections/releases/download/v0.1.0/pf2e-custom-sections.zip",
+  "manifest": "https://raw.githubusercontent.com/crash1115/pf2e-custom-sections/main/module.json",
   "compatibility": {
     "minimum": "12",
     "verified": "12"
@@ -28,8 +31,7 @@
     {
       "name": "Chelsea Ash",
       "url": "https://github.com/crash1115",
-      "discord": "crash1115",
-      "flags": {}
+      "discord": "crash1115"
     }
   ],
   "esmodules": [
