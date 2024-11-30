@@ -1,3 +1,5 @@
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/crash1115/pf2e-custom-sections/latest/total?style=flat-square)
+
 # PF2e Custom Action Sections
 A module for the pf2e Foundry VTT system that lets you assign custom sections to items that are displayed in the Encounters area of the Actions tab.
 
