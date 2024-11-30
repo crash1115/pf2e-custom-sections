@@ -11,7 +11,16 @@
       {
         "id": "pf2e",
         "type": "system",
-        "compatibility": {}
+        "compatibility": {
+          "minimum": "6.7.1",
+          "verified": "6.7.1"
+        }
+      }
+    ],
+    "requires":[
+      {
+        "id": "lib-wrapper",
+        "type": "module"
       }
     ]
   },
@@ -24,14 +33,18 @@
     }
   ],
   "esmodules": [
-    "./scripts/pf2e-custom-sections.js"
+    "scripts/pf2e-custom-sections.js"
   ],
   "styles": [
-    "./styles/pf2e-custom-sections.css"
+    "styles/pf2e-custom-sections.css"
   ],
   "flags": {
     "hotReload": {
-        "extensions": ["html", "css", "json"]
+      "extensions": [
+        "html",
+        "css",
+        "json"
+      ]
     }
   }
 }
