@@ -1,0 +1,37 @@
+{
+  "id": "pf2e-custom-sections",
+  "title": "PF2e Custom Action Sections",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "Chelsea Ash",
+      "url": "https://github.com/crash1115",
+      "discord": "crash1115",
+      "flags": {}
+    }
+  ],
+  "esmodules": [
+    "./scripts/pf2e-custom-sections.js"
+  ],
+  "styles": [
+    "./styles/pf2e-custom-sections.css"
+  ],
+  "flags": {
+    "hotReload": {
+        "extensions": ["html", "css", "json"]
+    }
+  }
+}
