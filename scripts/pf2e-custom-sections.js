@@ -3,7 +3,7 @@ const MODULE_NAME = "pf2e-custom-sections";
 
 
 /////////////////////////////////
-// ACTOR SHEET DATA MODIFICATIONS
+// PC SHEET DATA MODIFICATIONS
 /////////////////////////////////
 
 Hooks.once("ready", () => {
@@ -18,17 +18,26 @@ Hooks.once("ready", () => {
 async function addCustomSectionsToData(wrapped, options){
     const data = (await wrapped(options));
     const actor = (await game.actors.get(data.actor._id));
-    let newActionsData = JSON.parse(JSON.stringify(data.actions)); //we want a copy, to be safe here
+    let newActionsData = JSON.parse(JSON.stringify(data.actions)); //we want a copy, just to be safe
  
-    // Handle Encounter Actions
+    // Split encounter actions
     const actionData = splitActions(data.actions.encounter.action.actions, actor);
     const reactionData = splitActions(data.actions.encounter.reaction.actions, actor);
     const freeData = splitActions(data.actions.encounter.free.actions, actor);
-    const encounterActionsWithCustomSections = [...actionData.withCustomSections, ...reactionData.withCustomSections, ... freeData.withCustomSections];
+    
+    // Combine actions with custom sections into one array
+    const encounterActionsWithCustomSections = [
+        ...actionData.withCustomSections,
+        ...reactionData.withCustomSections,
+        ... freeData.withCustomSections
+    ];
+    
+    // Update default actions lists
     newActionsData.encounter.action.actions = actionData.withoutCustomSections;
     newActionsData.encounter.reaction.actions = reactionData.withoutCustomSections;
     newActionsData.encounter.free.actions = freeData.withoutCustomSections;
     
+    // Add new actions sections
     const newEncounterSections = createSectionData(encounterActionsWithCustomSections, actor);
     for(var i = 0; i < newEncounterSections.length; i++){
         const sectionName = newEncounterSections[i].label;
@@ -36,11 +45,13 @@ async function addCustomSectionsToData(wrapped, options){
         newActionsData.encounter[sectionId] = newEncounterSections[i];
     }
 
+    // Return updated data
     data.actions = newActionsData;
     return data;
 }
 
 function splitActions(actionsToSplit, actor){
+    // Get actions with custom section flags
     const actionsWithCustomSections = actionsToSplit.filter( action => {
         const itemId = action.id;
         const item = actor.items.get(itemId);
@@ -48,6 +59,7 @@ function splitActions(actionsToSplit, actor){
         if(sectionName) return action;
     });
     
+    // Get actions that aren't part of the previous array
     const actionsWithoutCustomSections = actionsToSplit.filter( action => !actionsWithCustomSections.includes(action) );
     
     return {
@@ -58,7 +70,7 @@ function splitActions(actionsToSplit, actor){
 
 function createSectionData (actions, actor){
     let sections = [];
-    for (var i=0; i<  actions.length; i++){
+    for(var i = 0; i < actions.length; i++){
         const action =  actions[i];         
         const itemId = action.id;
         const item = actor.items.get(itemId);
@@ -78,7 +90,7 @@ function createSectionData (actions, actor){
 }
 
 /////////////////////////////////
-// ACTOR SHEET MODIFICATIONS
+// PC SHEET MODIFICATIONS
 /////////////////////////////////
 
 Hooks.on(`renderActorSheetPF2e`, (app, html, data) => {    
@@ -87,22 +99,22 @@ Hooks.on(`renderActorSheetPF2e`, (app, html, data) => {
 
 function addClassesToHeaders (app, html, data) {
     // Get list of custom section labels
-    const encounterSections = data.actions.encounter;
     let customSectionLabels = [];
-    for (const property in encounterSections){
+    const encounterSections = data.actions.encounter;
+    for(const property in encounterSections){
         const section = encounterSections[property];
         if(section.isPf2eCustomSection){
             customSectionLabels.push(section.label)
         }
     }
 
-    // Get headers in encounter panel
+    // Get list of headers in encounter panel
     const actionPanels = html.find('.actions-panel');
     const encounterPanel = actionPanels.filter('[data-tab="encounter"]');
     const headers = encounterPanel.find('header');
 
     // Manipulate the custom section headers
-    for(var i=0; i<headers.length; i++){
+    for(var i = 0; i < headers.length; i++){
         const header = headers[i];
         const label = header.innerText.trim(" ").split("\n")[0];
 
@@ -120,6 +132,7 @@ function addClassesToHeaders (app, html, data) {
     } 
 }
 
+
 /////////////////////////////////
 // ITEM SHEET MODIFICATIONS
 /////////////////////////////////
@@ -133,12 +146,16 @@ Hooks.on(`renderAbilitySheetPF2e`, (app, html, data) => {
 });
 
 async function addCustomSectionField(app, html, data) {
-    // Don't activate this if the item is a downtime or exploration activity or an item
+    // Skip this item if parent is not a character type actor
+    if (data.item.parent.type != "character") return;
+
+    // Skip this item if it's a downtime or exploration activity
     const excludedTraits = ['exploration', 'downtime'];
     const itemTraits = data.data.traits.value || [];
-    const dontOverride = itemTraits.some( t => excludedTraits.includes(t) );
-    if(dontOverride) return;
+    const itemHasForbiddenTraits = itemTraits.some( t => excludedTraits.includes(t) );
+    if(itemHasForbiddenTraits) return;
 
+    // Inject content into to the sheet sidebar
     let sidebar = html.find('.inventory-details');
     let sectionInput = $(await renderTemplate('modules/pf2e-custom-sections/templates/feat-sheet-input.hbs', data.item.flags[MODULE_NAME]))
     sidebar.append(sectionInput);
