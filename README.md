@@ -4,7 +4,7 @@
 A module for the pf2e Foundry VTT system that lets you assign custom sections to items that are displayed in the Encounters area of the Actions tab.
 
 ## Tips
-- Avoid creating sections with the same names as the default ones (Attacks, Actions, Reactions, Free Actions etc). This won't put the item into the default section, it'll create a new section of the same name and tag both your new one and the default one as a custom section.
+- Avoid creating sections with the same names as the default ones (Attacks, Actions, Reactions, Free Actions etc). The module will yell at you, then not do the thing.
 
 ## Notes
 - This only works on `character` (PC) type actors right now
