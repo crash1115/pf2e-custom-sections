@@ -93,7 +93,7 @@ function createSectionData (actions, actor){
 // PC SHEET MODIFICATIONS
 /////////////////////////////////
 
-Hooks.on(`renderActorSheetPF2e`, (app, html, data) => {    
+Hooks.on(`renderCharacterSheetPF2e`, (app, html, data) => {    
     addClassesToHeaders(app, html, data);
 });
 
