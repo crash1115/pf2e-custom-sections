@@ -175,6 +175,29 @@ function activateTabListeners(html, data){
     }); 
 }
 
+/////////////////////////////////
+// ITEM UPDATE MODIFICATIONS
+/////////////////////////////////
+
+Hooks.on(`preUpdateItem`, (item, change, options, userId) => {  
+    if(!change.flags) return; 
+    if(!change.flags[MODULE_NAME]) return;
+    const newSectionName = change.flags[MODULE_NAME].customSection;
+    if(!newSectionName) return;
+
+    // Pull labels we shouldn't use - Attacks / Actions / Reactions / Free Actions
+    const restrictedSectionLabels = [
+        game.i18n.localize("PF2E.Actor.Attacks"),
+        game.i18n.localize("PF2E.ActionsActionsHeader"),
+        game.i18n.localize("PF2E.ActionsFreeActionsHeader"),
+        game.i18n.localize("PF2E.ActionsReactionsHeader")
+    ];
+
+    if(restrictedSectionLabels.includes(newSectionName)){
+        ui.notifications.error(`Section name ${newSectionName} already in use by system. Please choose another.`);
+        return false;
+    }
+});
 
 /////////////////////////////////
 // UTILITY METHODS
@@ -188,3 +211,9 @@ function slugify(str) {
              .replace(/-+/g, '-'); // remove consecutive hyphens
     return str;
 }
+
+
+
+
+
+
