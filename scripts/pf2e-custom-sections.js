@@ -147,7 +147,7 @@ Hooks.on(`renderAbilitySheetPF2e`, (app, html, data) => {
 
 async function addCustomSectionField(app, html, data) {
     // Skip this item if parent is not a character type actor
-    if (data.item.parent.type != "character") return;
+    if (data.item?.parent?.type != "character") return;
 
     // Skip this item if it's a downtime or exploration activity
     const excludedTraits = ['exploration', 'downtime'];
