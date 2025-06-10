@@ -17,3 +17,6 @@ A module for the pf2e Foundry VTT system that lets you assign custom sections to
 - [B] Leaving the custom section label field blank will display the item in its default section (in this case, Reactions).
 - [C] Entering text into the label field will put the item into a section with the matching name. If no section exists, it is created.
 ![image](https://github.com/crash1115/pf2e-custom-sections/blob/main/media/sample.PNG?raw=true)
+
+# Installation
+Via manifest URL: https://raw.githubusercontent.com/crash1115/pf2e-custom-sections/main/module.json
