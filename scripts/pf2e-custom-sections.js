@@ -155,7 +155,7 @@ async function addCustomSectionField(app, html, data) {
 
     // Inject content into to the sheet sidebar
     let sidebar = html.find('.inventory-details');
-    let sectionInput = $(await renderTemplate('modules/pf2e-custom-sections/templates/feat-sheet-input.hbs', data.item.flags[MODULE_NAME]));
+    const sectionInput = $(await foundry.applications.handlebars.renderTemplate('modules/pf2e-custom-sections/templates/feat-sheet-input.hbs', data.item.flags[MODULE_NAME]));
     sidebar.append(sectionInput);
     activateTabListeners(html, data);   
 }
@@ -209,9 +209,3 @@ function slugify(str) {
              .replace(/-+/g, '-'); // remove consecutive hyphens
     return str;
 }
-
-
-
-
-
-
